@@ -9,3 +9,12 @@ You have to install all the packages using pip:
 ```
 pip install -r requirements.txt
 ```
+## Step Four: Run the program 
+You can run the file by using:
+```
+python main.py
+```
+Or:
+```
+python3 main.py
+```
