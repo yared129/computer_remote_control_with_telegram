@@ -46,11 +46,6 @@ PERMISSION_DOWNLOAD = True
 PERMISSION_UPLOAD = True
 PERMISSION_COMMAND_PROMPT = True
 
-date = datetime.datetime.now()
-day = date.day
-month = date.month
-hour = date.hour
-
 def run_telegram_bot():
     global loop_telegram
     global loop

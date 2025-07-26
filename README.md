@@ -7,5 +7,5 @@ After [BotFather](https://t.me/BotFather) has successfully created a new bot for
 ## Step Three: Install packages 
 You have to install all the packages using pip:
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
