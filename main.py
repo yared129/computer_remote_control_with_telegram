@@ -51,8 +51,6 @@ day = date.day
 month = date.month
 hour = date.hour
 
-password = f"{month*24}{day*23}{hour*22}"
-
 def run_telegram_bot():
     global loop_telegram
     global loop
@@ -73,8 +71,9 @@ def run_telegram_bot():
                 current_datetime = datetime.datetime.now()
                 day = current_datetime.day
                 hour = current_datetime.hour
+                min = current_datetime.minute
                 if len(text) > 17:
-                    if text[10:] == f"Something{day}{hour}":
+                    if text[10:] == f"{day}{hour}{min}":
                         LOGGED_IN.append(chat_id)
                         FINISHED = False
                         await update.message.reply_text(f"Welcome!\nCWD\n{os.getcwd()}")
@@ -274,7 +273,7 @@ def run_telegram_bot():
                         
             async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 await update.message.reply_text(
-                    'I can respond to the following commands:\n/start - Start the bot\n/help - Get help information'
+                    'I can respond to the following commands:\n/start - Start the bot\n/help - Get help information\n/password - InputPassword to gain access to connected device'
                 )
             tg_application.add_handler(CommandHandler('start', start))
             tg_application.add_handler(CommandHandler('help', help_command))
@@ -440,35 +439,13 @@ class MainWidget(QWidget):
         if self.t != None:
             loop.call_soon_threadsafe(loop.stop)
             self.t.join()
-        
-class PasswordChecker(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowIcon(QIcon("installer_logo.jpg"))
-        self.setWindowTitle("Online Remote Controller")
-        self.setStyleSheet("background-color:black; color: white;")
-
-def run_main():
-        widget.show()
-        text, ok = QInputDialog.getText(widget,"Installer", "Enter Password:")
-        if ok and text:
-            if text==str(password):
-                widget.hide()
-                window.start_telegram()
-                threading.Thread(target=window.update_label, daemon=True).start()
-                window.show()
-                sys.exit(app.exec_())
-            else:
-                reply = QMessageBox.question(None, "Confirm", "Wrong password!\nDo you want to try again?",
-                                    QMessageBox.Yes | QMessageBox.No)
-                if reply==QMessageBox.Yes:
-                    run_main()
+    
             
 if __name__=="__main__":
-    # This is something
     app = QApplication(sys.argv)
     window = MainWidget()
-    widget = PasswordChecker()
-
-    run_main()
+    window.start_telegram()
+    threading.Thread(target=window.update_label, daemon=True).start()
+    window.show()
+    sys.exit(app.exec_())
     
